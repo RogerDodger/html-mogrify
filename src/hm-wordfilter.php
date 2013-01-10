@@ -37,7 +37,7 @@ class Wordfilter
 		if( $ok ) {
 			$this->_rules[] = array($from, $to, $type);
 		}
-		else throw new \Exception("Not a valid rule");
+		else throw new Exception("Not a valid rule");
 	}
 
 	public function clearRules() {
@@ -58,7 +58,7 @@ class Wordfilter
 				$this->addIgnore($elem);
 			}
 		}
-		else throw new \Exception("Ignores must be strings containing only ASCII letters");
+		else throw new Exception("Ignores must be strings containing only ASCII letters");
 	}
 
 	public function clearIgnores() {
