@@ -16,8 +16,7 @@ class Wordfilter
 	// HTML tags in which text is not mogrified
 	private $_ignores;
 
-	public function __construct() 
-	{
+	public function __construct() {
 		$this->_rules = array();
 		$this->_ignores = array("pre", "code", "script", "kbd");
 	}
@@ -29,8 +28,7 @@ class Wordfilter
 	 * @param to what to change it to
 	 * @param type what type of substitution to use
 	 */
-	public function addRule($from, $to, $type = HM_PLAIN) 
-	{
+	public function addRule($from, $to, $type = HM_PLAIN) {
 		$ok = is_string($from) 
 			&& ( $type == HM_CALLBACK && is_callable($to) || is_string($to) );
 
