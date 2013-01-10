@@ -73,7 +73,7 @@ class Wordfilter
 		$ignore_stack = array();
 
 		// This is safe, since we know that the ignores are only alphabetical characters
-		$ignore_re = "`" . "^<(/?)(" . join("|", $this->_ignores) . ")[\\s>]" . "`";
+		$ignore_re = "`" . "^<(/?)(" . join("|", $this->_ignores) . ")[\\s>]" . "`i";
 
 		foreach($tokens as $token) {
 
@@ -81,7 +81,7 @@ class Wordfilter
 
 				if(preg_match($ignore_re, $token[1], $matches)) {
 
-					$tag = $matches[2];
+					$tag = strtolower($matches[2]);
 
 					if($matches[1] === '/') {
 						// Closing tag
