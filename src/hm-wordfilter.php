@@ -1,5 +1,4 @@
 <?php
-namespace HTML\Mogrify;
 
 require_once 'hm-main.php';
 
@@ -30,10 +29,10 @@ class Wordfilter
 	 * @param to what to change it to
 	 * @param type what type of substitution to use
 	 */
-	public function addRule($from, $to, $type = PLAIN) 
+	public function addRule($from, $to, $type = HM_PLAIN) 
 	{
 		$ok = is_string($from) 
-			&& ( $type == CALLBACK && is_callable($to) || is_string($to) );
+			&& ( $type == HM_CALLBACK && is_callable($to) || is_string($to) );
 
 		if( $ok ) {
 			$this->_rules[] = array($from, $to, $type);
@@ -68,7 +67,7 @@ class Wordfilter
 
 	public function process($text) {
 
-		$tokens = _tokenise($text);
+		$tokens = _hm_tokenise($text);
 		$output = '';
 
 		// Array with indices of tag elements and values of how many of these deep we are
@@ -80,7 +79,7 @@ class Wordfilter
 
 		foreach($tokens as $token) {
 
-			if($token[0] === TAG) {
+			if($token[0] === HM_TAG) {
 
 				if(preg_match($ignore_re, $token[1], $matches)) {
 
@@ -105,18 +104,18 @@ class Wordfilter
 
 				$output .= $token[1];
 			}
-			elseif($token[0] === TEXT) {
+			elseif($token[0] === HM_TEXT) {
 
 				// Check that we aren't inside an ignored tag
 				if($ignore_stack == array()) {
 					foreach($this->_rules as $rule) {
-						if($rule[2] === PLAIN) {
+						if($rule[2] === HM_PLAIN) {
 							$token[1] = str_replace($rule[0], $rule[1], $token[1]);
 						}
-						elseif($rule[2] === REGEX) {
+						elseif($rule[2] === HM_REGEX) {
 							$token[1] = preg_replace($rule[0], $rule[1], $token[1]);
 						}
-						elseif($rule[2] === CALLBACK) {
+						elseif($rule[2] === HM_CALLBACK) {
 							$token[1] = preg_replace_callback($rule[0], $rule[1], $token[1]);
 						}
 					}

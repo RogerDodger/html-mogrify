@@ -1,39 +1,38 @@
 <?php
-namespace HTML\Mogrify;
 
-const TEXT = 1;
-const TAG = 2;
+define("HM_TEXT", 1);
+define("HM_TAG", 2);
 
-const PLAIN = 1;
-const REGEX = 2;
-const CALLBACK = 3;
+define("HM_PLAIN", 1);
+define("HM_REGEX", 2);
+define("HM_CALLBACK", 3);
 
-function _tokenise($input) {
+function _hm_tokenise($input) {
 
 	$input_length = strlen($input);
 	$tokens = array();
-	$state = TEXT;
+	$state = HM_TEXT;
 	$in_str = false;
 	$token_length = 0;
 
 	for($i = 0; $i < $input_length; $i++) {
 
-		if($state === TEXT) {
+		if($state === HM_TEXT) {
 
 			if($input[$i] == '<') {
 				if($token_length > 0) {
 					$tokens[] = array(
-						TEXT, 
+						$state, 
 						substr($input, $i - $token_length, $token_length),
 					);
 				}
 				$token_length = 0;
-				$state = TAG;
+				$state = HM_TAG;
 			}
 
 		}
 
-		elseif($state === TAG) {
+		elseif($state === HM_TAG) {
 
 			if($in_str !== false) {
 				if($input[$i] === $in_str) {
@@ -45,11 +44,11 @@ function _tokenise($input) {
 			}
 			elseif($input[$i] == '>') {
 				$tokens[] = array(
-					TAG,
+					$state,
 					substr($input, $i - $token_length, $token_length + 1),
 				);
 				$token_length = -1;
-				$state = TEXT;
+				$state = HM_TEXT;
 			}
 
 		}

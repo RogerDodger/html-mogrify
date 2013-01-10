@@ -25,7 +25,7 @@ $in = <<<EOI
 <p class="dog"><pre><code>Dog eat dog world.</code></pre>dog</p>
 EOI;
 
-$wf = new HTML\Mogrify\Wordfilter();
+$wf = new Wordfilter();
 
 //---
 
@@ -58,7 +58,7 @@ is($out, $wf->process($in));
 
 //--
 
-$wf->addRule("/dog/i", "cat", HTML\Mogrify\REGEX);
+$wf->addRule("/dog/i", "cat", HM_REGEX);
 
 $out = <<<EOI
 ģ<p title='<ጾp blah dog>ģ'>ģcat</p>
@@ -79,7 +79,7 @@ function dogcat($matches) {
 }
 
 $wf->clearRules();
-$wf->addRule("/dog/i", "dogcat", HTML\Mogrify\CALLBACK);
+$wf->addRule("/dog/i", "dogcat", HM_CALLBACK);
 
 $out = <<<EOI
 ģ<p title='<ጾp blah dog>ģ'>ģdog</p>
@@ -92,15 +92,5 @@ EOI;
 is($out, $wf->process($in));
 
 //---
-
-$wf = new HTML\Mogrify\Wordfilter;
-
-$out = <<<EOI
-ģ<p title='<p blah dog>ģ'>ģdog</p>
-<script>
-	document.write("Dog eat dog world");
-</script>
-<p class="dog"><pre><code>Dog eat dog world.</code></pre>dog</p>
-EOI;
 
 ?>
